@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import api from '../api/axios';
 import toast from 'react-hot-toast';
 import { Mail, Lock } from 'lucide-react';
-import api from '../api/axios';
-import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
@@ -21,8 +21,8 @@ export default function Login() {
 
     try {
       const res = await api.post('/user/login', formData);
-      const { token } = res.data.data;
-      login(token);
+      const { token, user } = res.data.data;
+      login(token, user);
       toast.success('Logged in successfully!');
       navigate('/');
     } catch (err) {
@@ -36,7 +36,7 @@ export default function Login() {
     <div className="flex min-h-screen items-center justify-center bg-slate-900 px-4">
       <div className="w-full max-w-md rounded-2xl bg-slate-800 p-8 shadow-xl border border-slate-700">
         <h2 className="text-2xl font-bold text-white text-center">Welcome Back</h2>
-        <p className="text-sm text-slate-400 text-center mt-1">Sign in to Nexachain AI</p>
+        <p className="text-sm text-slate-400 text-center mt-1">Sign in to your member account</p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
@@ -56,7 +56,15 @@ export default function Login() {
           </div>
 
           <div>
-            <label className="block text-xs font-medium text-slate-300 mb-1">Password</label>
+            <div className="flex items-center justify-between mb-1">
+              <label className="block text-xs font-medium text-slate-300">Password</label>
+              <Link
+                to="/forgot-password"
+                className="text-xs text-indigo-400 hover:text-indigo-300 transition"
+              >
+                Forgot password?
+              </Link>
+            </div>
             <div className="relative">
               <Lock className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
               <input

@@ -34,7 +34,7 @@ export default function Dashboard() {
         api.get('/referrel/tree'),
       ]);
 
-      console.log(statsRes, invRes,roiRes,refIncomeRes, treeRes)
+      // console.log(statsRes, invRes,roiRes,refIncomeRes, treeRes)
 
       setStats(statsRes.data?.data?.stats || {});
       setInvestments(invRes.data?.data?.investments || []);
